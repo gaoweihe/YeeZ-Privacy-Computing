@@ -53,6 +53,8 @@ class classic_job:
         self.all_outputs.append(sealed_data_url)
         self.all_outputs.append(sealed_output)
 
+        exit()
+
         # use first pkey
         key = job_step.get_first_key(self.crypto)
         pkey = key['public-key']
