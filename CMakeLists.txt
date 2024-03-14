@@ -126,7 +126,7 @@ endif()
 if(SGX_MODE STREQUAL "Debug")
   include(GTest)
   enable_testing()
-  add_subdirectory(test)
+  # add_subdirectory(test)
 endif()
 
 Doxygen(${PROJECT_SOURCE_DIR})

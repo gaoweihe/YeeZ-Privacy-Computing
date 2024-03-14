@@ -32,4 +32,9 @@ template <uint64_t MagicNumber_t, uint64_t BlockNumLimit_t,
 using blockfile = blockfile_v1<ypc::cxxfile, MagicNumber_t, BlockNumLimit_t,
                                BlockSizeLimit_t>;
 
+template <uint64_t MagicNumber_t, uint64_t BlockNumLimit_t,
+          uint64_t BlockSizeLimit_t>
+using blockfile_reversed = blockfile_v1_reversed<ypc::cxxfile, MagicNumber_t, BlockNumLimit_t,
+                               BlockSizeLimit_t>;
+
 } // namespace ypc

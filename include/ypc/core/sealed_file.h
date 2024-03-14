@@ -36,11 +36,43 @@ public:
 protected:
   blockfile_t m_file;
 };
+
+class sealed_file_reversed_base {
+public:
+  using blockfile_reversed_t = blockfile_reversed<0x4788d13e7fefe21f, 1024 * 1024,
+                                256 * ::ypc::utc::max_item_size>;
+
+  sealed_file_reversed_base(const std::string &file_path, bool read);
+
+  virtual ~sealed_file_reversed_base() = default;
+  virtual void write_item(const bytes &data);
+
+  virtual void reset_read() = 0;
+
+  virtual int next_item(char *buf, size_t in_size, size_t &out_size) = 0;
+
+public:
+  sealed_file_reversed_base(const sealed_file_reversed_base &) = delete;
+  sealed_file_reversed_base(sealed_file_reversed_base &&) = delete;
+  sealed_file_reversed_base &operator=(sealed_file_reversed_base &&) = delete;
+  sealed_file_reversed_base &operator=(const sealed_file_reversed_base &) = delete;
+
+protected:
+  blockfile_reversed_t m_file;
+};
 } // namespace internal
 
 class simple_sealed_file : public internal::sealed_file_base {
 public:
   simple_sealed_file(const std::string &file_path, bool read);
+  virtual void reset_read();
+  virtual int next_item(char *buf, size_t in_size, size_t &out_size);
+};
+
+class simple_sealed_file_reversed : public internal::sealed_file_reversed_base {
+public:
+  simple_sealed_file_reversed(const std::string &file_path, bool read);
+  virtual void close(); 
   virtual void reset_read();
   virtual int next_item(char *buf, size_t in_size, size_t &out_size);
 };

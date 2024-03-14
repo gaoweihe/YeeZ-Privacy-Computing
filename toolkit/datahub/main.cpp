@@ -44,7 +44,7 @@ public:
   }
 };
 
-void write_batch(const crypto_ptr_t &crypto_ptr, simple_sealed_file &sf,
+void write_batch(const crypto_ptr_t &crypto_ptr, simple_sealed_file_reversed &sf,
                  const std::vector<ypc::bytes> &batch,
                  const ypc::bytes &public_key) {
   ntt::batch_data_pkg_t pkg;
@@ -69,7 +69,7 @@ uint32_t seal_file(const crypto_ptr_t &crypto_ptr, const std::string &plugin,
                    const ypc::bytes &public_key, ypc::bytes &data_hash) {
   // Read origin file use sgx to seal file
   privacy_data_reader reader(plugin, file);
-  simple_sealed_file sf(sealed_file_path, false);
+  simple_sealed_file_reversed sf(sealed_file_path, false);
   // std::string k(file);
   // k = k + std::string(sealer_path);
 
@@ -115,6 +115,8 @@ uint32_t seal_file(const crypto_ptr_t &crypto_ptr, const std::string &plugin,
     batch.clear();
     batch_size = 0;
   }
+
+  sf.close(); 
 
   std::cout << "data hash: " << data_hash << std::endl;
   std::cout << "\nDone read data count: " << pd.count() << std::endl;

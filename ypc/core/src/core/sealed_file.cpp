@@ -11,7 +11,20 @@ sealed_file_base::sealed_file_base(const std::string &file_path, bool read) {
   }
 }
 
+sealed_file_reversed_base::sealed_file_reversed_base(const std::string &file_path, bool read) {
+  if (read) {
+    m_file.open_for_read(file_path.c_str());
+    m_file.reset_read_item();
+  } else {
+    m_file.open_for_write(file_path.c_str());
+  }
+}
+
 void sealed_file_base::write_item(const bytes &data) {
+  m_file.append_item((const char *)data.data(), data.size());
+}
+
+void sealed_file_reversed_base::write_item(const bytes &data) {
   m_file.append_item((const char *)data.data(), data.size());
 }
 } // namespace internal
@@ -19,9 +32,23 @@ void sealed_file_base::write_item(const bytes &data) {
 simple_sealed_file::simple_sealed_file(const std::string &file_path, bool read)
     : sealed_file_base(file_path, read) {}
 
+simple_sealed_file_reversed::simple_sealed_file_reversed(const std::string &file_path, bool read)
+    : sealed_file_reversed_base(file_path, read) {}
+
 void simple_sealed_file::reset_read() { m_file.reset_read_item(); }
+
+void simple_sealed_file_reversed::reset_read() { m_file.reset_read_item(); }
+
 int simple_sealed_file::next_item(char *buf, size_t in_size, size_t &out_size) {
   return m_file.next_item(buf, in_size, out_size);
+}
+
+int simple_sealed_file_reversed::next_item(char *buf, size_t in_size, size_t &out_size) {
+  return m_file.next_item(buf, in_size, out_size);
+}
+
+void simple_sealed_file_reversed::close() {
+  m_file.close();
 }
 
 #if 0

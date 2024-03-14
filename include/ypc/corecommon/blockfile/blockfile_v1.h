@@ -1,4 +1,5 @@
 #include "ypc/corecommon/blockfile/blockfile_base.h"
+#include "ypc/corecommon/blockfile/blockfile_base_reversed.h"
 
 namespace ypc {
 namespace internal {
@@ -14,6 +15,12 @@ template <typename File_t, uint64_t MagicNumber_t, uint64_t BlockNumLimit_t,
           uint64_t BlockSizeLimit_t>
 using blockfile_v1 =
     internal::blockfile_impl<internal::blockfile_header_v1, File_t,
+                             MagicNumber_t, BlockNumLimit_t, BlockSizeLimit_t>;
+
+template <typename File_t, uint64_t MagicNumber_t, uint64_t BlockNumLimit_t,
+          uint64_t BlockSizeLimit_t>
+using blockfile_v1_reversed =
+    internal::blockfile_impl_reversed<internal::blockfile_header_v1, File_t,
                              MagicNumber_t, BlockNumLimit_t, BlockSizeLimit_t>;
 
 } // namespace ypc
